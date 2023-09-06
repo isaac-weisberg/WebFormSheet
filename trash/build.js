@@ -4,10 +4,6 @@ function newDiv() {
     return document.createElement('div')
 }
 
-const htmlElement = document.querySelector("html")
-
-htmlElement.style.height = "100vh"
-
 const root = document.getElementById('App')
 root.style.height = "100vh"
 root.style.maxWidth = "400px"
