@@ -18,39 +18,44 @@ export function ModalStack(initialController: IController): IModalStack {
     root.style.backgroundColor = '#000000'
 
     const baseHeight = '100vh'
-
     root.style.height = baseHeight
+    root.style.position = 'relative'
 
     const initialControllerWrapper = document.createElement('div')
     root.appendChild(initialControllerWrapper)
 
+    initialController.view.style.height = baseHeight
     initialControllerWrapper.appendChild(initialController.view)
 
     return {
         root,
         present(c: IController): void {
             const sheetContainer = document.createElement('div')
+            sheetContainer.style.position = 'absolute'
+            sheetContainer.style.top = '0px'
+            sheetContainer.style.left = '0px'
+            sheetContainer.style.right = '0px'
             sheetContainer.className = '_modalContainer'
-            sheetContainer.style.height = "100vh"
+            sheetContainer.style.height = baseHeight
             sheetContainer.style.overflow = 'scroll'
 
             root.appendChild(sheetContainer)
 
             const sheet = document.createElement('div')
             sheet.className = '_sheet'
-            sheet.style.marginTop = "100vh"
+            sheet.style.marginTop = baseHeight
             sheet.style.borderRadius = '16px'
             sheet.style.overflow = 'hidden'
             sheetContainer.appendChild(sheet)
 
-            const innerContent = document.createElement('div')
-            innerContent.className = '_innorContent'
-            innerContent.style.height = "calc(100vh - 32px)"
-            innerContent.style.backgroundColor = "#FFFFFF"
-            innerContent.style.overflow = 'scroll'
-            sheet.appendChild(innerContent)
+            const contentWrapper = document.createElement('div')
+            contentWrapper.className = '_contentWrapper'
+            contentWrapper.style.height = `calc(${baseHeight} - 32px)`
+            contentWrapper.style.backgroundColor = "#FFFFFF"
+            contentWrapper.style.overflow = 'scroll'
+            sheet.appendChild(contentWrapper)
 
-            innerContent.appendChild(c.view)
+            contentWrapper.appendChild(c.view)
 
             const frame: ModalStackFrame = {
                 controller: c,
@@ -59,6 +64,11 @@ export function ModalStack(initialController: IController): IModalStack {
             
             frames = frames.concat(frame)
             root.appendChild(sheetContainer)
+
+            sheetContainer.scrollTo({ 
+                top: window.innerHeight - 32, 
+                behavior: 'smooth'
+            })
         }
     }
 }
