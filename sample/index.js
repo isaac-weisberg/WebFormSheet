@@ -31,12 +31,12 @@ setTimeout(() => {
     modalStack.present({ view: innerDiv })
 }, 3000)
 
-setTimeout(() => {
-    const innerDiv = document.createElement('div')
-    innerDiv.textContent = `
-        HI, I'm mel gibson and you are watching disney channel
+// setTimeout(() => {
+//     const innerDiv = document.createElement('div')
+//     innerDiv.textContent = `
+//         HI, I'm mel gibson and you are watching disney channel
 
-    `
+//     `
     
-    modalStack.present({ view: innerDiv })
-}, 5000)
+//     modalStack.present({ view: innerDiv })
+// }, 5000)

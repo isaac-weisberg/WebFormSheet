@@ -22,14 +22,25 @@ export function ModalStack(initialController: IController): IModalStack {
     root.style.position = 'relative'
 
     const initialControllerWrapper = document.createElement('div')
+    initialControllerWrapper.style.overflow = 'hidden'
+    initialControllerWrapper.style.transition = 'border-radius .2s ease-out, transform .2s ease-out'
+    initialControllerWrapper.style.transformOrigin = '50% 25%'
     root.appendChild(initialControllerWrapper)
 
     initialController.view.style.height = baseHeight
     initialControllerWrapper.appendChild(initialController.view)
 
+    const firstTierConstrictionOffsetFromEdge = 24 // left-right edge, that is
+
     return {
         root,
         present(c: IController): void {
+            const rootWidth = root.offsetWidth
+            const firstTierConstictionWidth = rootWidth - firstTierConstrictionOffsetFromEdge * 2
+            const firstTierConstrictionToFullSizeRatio = firstTierConstictionWidth / rootWidth
+            initialControllerWrapper.style.borderRadius = '24px'
+            initialControllerWrapper.style.transform = `scale(${firstTierConstrictionToFullSizeRatio}) translate(0px,  -8px)`
+
             const sheetContainer = document.createElement('div')
             sheetContainer.style.position = 'absolute'
             sheetContainer.style.top = '0px'
@@ -44,7 +55,8 @@ export function ModalStack(initialController: IController): IModalStack {
             const sheet = document.createElement('div')
             sheet.className = '_sheet'
             sheet.style.marginTop = baseHeight
-            sheet.style.borderRadius = '16px'
+            sheet.style.borderTopLeftRadius = '16px'
+            sheet.style.borderTopRightRadius = '16px'
             sheet.style.overflow = 'hidden'
             sheetContainer.appendChild(sheet)
 
@@ -66,7 +78,7 @@ export function ModalStack(initialController: IController): IModalStack {
             root.appendChild(sheetContainer)
 
             sheetContainer.scrollTo({ 
-                top: window.innerHeight - 32, 
+                top: contentWrapper.offsetHeight, 
                 behavior: 'smooth'
             })
         }
