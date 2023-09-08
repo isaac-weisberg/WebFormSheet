@@ -35,17 +35,26 @@ export function ModalStack(initialController: IController): IModalStack {
     return {
         root,
         present(c: IController): void {
+            let elementThatWillFirstTierConstrict: HTMLDivElement
+            if (frames.length > 0) {
+                const lastFrame = frames[frames.length - 1] 
+                elementThatWillFirstTierConstrict = lastFrame.sheetContainer
+            } else {
+                elementThatWillFirstTierConstrict = initialControllerWrapper
+            }
+
             const rootWidth = root.offsetWidth
             const firstTierConstictionWidth = rootWidth - firstTierConstrictionOffsetFromEdge * 2
             const firstTierConstrictionToFullSizeRatio = firstTierConstictionWidth / rootWidth
-            initialControllerWrapper.style.borderRadius = '24px'
-            initialControllerWrapper.style.transform = `scale(${firstTierConstrictionToFullSizeRatio}) translate(0px,  -8px)`
+            elementThatWillFirstTierConstrict.style.borderRadius = '24px'
+            elementThatWillFirstTierConstrict.style.transform = `scale(${firstTierConstrictionToFullSizeRatio}) translate(0px,  -8px)`
 
             const sheetContainer = document.createElement('div')
             sheetContainer.style.position = 'absolute'
             sheetContainer.style.top = '0px'
             sheetContainer.style.left = '0px'
             sheetContainer.style.right = '0px'
+            sheetContainer.style.transition = 'border-radius .2s ease-out, transform .2s ease-out'
             sheetContainer.className = '_modalContainer'
             sheetContainer.style.height = baseHeight
             sheetContainer.style.overflow = 'scroll'
