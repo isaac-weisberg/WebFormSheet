@@ -6,23 +6,6 @@ interface ModalStackFrame {
     sheet: HTMLDivElement
     contentWrapper: HTMLDivElement
 }
-
-function scrollToOpenedState(frame: ModalStackFrame) {
-    frame.contentWrapper.style.height = `calc(100vh - ${sheetGapFromTop}px)`
-    frame.sheetContainer.scrollTo({ 
-        top: frame.contentWrapper.offsetHeight, 
-        behavior: 'smooth'
-    })
-}
-
-function scrollToConstrictionState(frame: ModalStackFrame) {
-    frame.contentWrapper.style.height = `100vh`
-    frame.sheetContainer.scrollTo({ 
-        top: frame.contentWrapper.offsetHeight + sheetGapFromTop,
-        behavior: 'smooth'
-    })
-}
-
 export interface IModalStack {
     root: HTMLElement
 
@@ -34,15 +17,30 @@ const sheetTransition = 'border-radius .2s ease-out, transform .2s ease-out'
 const sheetGapFromTop = 32
 const sheetsBackgroundColor = '#FFFFFF'
 
-let once = true
-
 export function ModalStack(initialController: IController): IModalStack {
+    const baseHeight = '100vh'
+
+    function scrollToOpenedState(frame: ModalStackFrame) {
+        frame.contentWrapper.style.height = `calc(${baseHeight} - ${sheetGapFromTop}px)`
+        frame.sheetContainer.scrollTo({ 
+            top: frame.contentWrapper.offsetHeight, 
+            behavior: 'smooth'
+        })
+    }
+
+    function scrollToConstrictionState(frame: ModalStackFrame) {
+        frame.contentWrapper.style.height = baseHeight
+        frame.sheetContainer.scrollTo({ 
+            top: frame.contentWrapper.offsetHeight + sheetGapFromTop,
+            behavior: 'smooth'
+        })
+    }
+
     let frames: ModalStackFrame[] = []
 
     const root = document.createElement('div')
     root.style.backgroundColor = '#000000'
 
-    const baseHeight = '100vh'
     root.style.height = baseHeight
     root.style.position = 'relative'
 
