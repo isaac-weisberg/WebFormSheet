@@ -12,7 +12,6 @@ export interface IModalStack {
     present(c: IController): void
 }
 
-const sheetsOriginTransform = '50% 0%'
 const sheetTransition = 'border-radius .2s ease-out, transform .2s ease-out'
 const sheetGapFromTop = 32
 const sheetsBackgroundColor = '#FFFFFF'
@@ -21,17 +20,8 @@ export function ModalStack(initialController: IController): IModalStack {
     const baseHeight = '100vh'
 
     function scrollToOpenedState(frame: ModalStackFrame) {
-        frame.contentWrapper.style.height = `calc(${baseHeight} - ${sheetGapFromTop}px)`
         frame.sheetContainer.scrollTo({ 
             top: frame.contentWrapper.offsetHeight, 
-            behavior: 'smooth'
-        })
-    }
-
-    function scrollToConstrictionState(frame: ModalStackFrame) {
-        frame.contentWrapper.style.height = baseHeight
-        frame.sheetContainer.scrollTo({ 
-            top: frame.contentWrapper.offsetHeight + sheetGapFromTop,
             behavior: 'smooth'
         })
     }
@@ -47,7 +37,7 @@ export function ModalStack(initialController: IController): IModalStack {
     const initialControllerWrapper = document.createElement('div')
     initialControllerWrapper.style.overflow = 'hidden'
     initialControllerWrapper.style.transition = sheetTransition
-    initialControllerWrapper.style.transformOrigin = sheetsOriginTransform
+    initialControllerWrapper.style.transformOrigin = '50% 0%'
     initialControllerWrapper.style.backgroundColor = sheetsBackgroundColor
     root.appendChild(initialControllerWrapper)
 
@@ -67,13 +57,10 @@ export function ModalStack(initialController: IController): IModalStack {
                 const lastFrame = frames[frames.length - 1] 
 
                 const elementThatWillFirstTierConstrict = lastFrame.sheetContainer
-                elementThatWillFirstTierConstrict.style.transformOrigin = sheetsOriginTransform
                 elementThatWillFirstTierConstrict.style.borderRadius = '24px'
-                elementThatWillFirstTierConstrict.style.transform = `translate(0px,  24px) scale(${firstTierConstrictionToFullSizeRatio})`
-                scrollToConstrictionState(lastFrame)
+                elementThatWillFirstTierConstrict.style.transform = `translate(0px,  -8px) scale(${firstTierConstrictionToFullSizeRatio})`
             } else {
                 const elementThatWillFirstTierConstrict = initialControllerWrapper
-                elementThatWillFirstTierConstrict.style.transformOrigin = sheetsOriginTransform
                 elementThatWillFirstTierConstrict.style.borderRadius = '24px'
                 elementThatWillFirstTierConstrict.style.transform = `translate(0px,  24px) scale(${firstTierConstrictionToFullSizeRatio})`
             }
@@ -87,6 +74,7 @@ export function ModalStack(initialController: IController): IModalStack {
             sheetContainer.className = '_modalContainer'
             sheetContainer.style.height = baseHeight
             sheetContainer.style.overflow = 'scroll'
+            sheetContainer.style.transformOrigin = '50% 32px'
 
             const sheet = document.createElement('div')
             sheet.className = '_sheet'
