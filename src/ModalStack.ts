@@ -119,7 +119,7 @@ export function ModalStack(initialController: IController): IModalStack {
             scrollToOpenedState(frame)
 
             let scrollHandleTimer: NodeJS.Timeout
-            sheetContainer.onscroll = (e) => {
+            sheetContainer.onscroll = () => {
                 clearTimeout(scrollHandleTimer)
                 scrollHandleTimer = setTimeout(() => {
                     const scrollTop = sheetContainer.scrollTop
@@ -132,19 +132,6 @@ export function ModalStack(initialController: IController): IModalStack {
                     }
                 }, 300)
             }
-
-            sheetContainer.ondragenter = (e) => {
-                console.log("ondragenter")
-            }
-
-            sheetContainer.ondragstart = (e) => {
-                console.log("ondragstart")
-            }
-
-            sheetContainer.ondrag = (e) => {
-                console.log("ondrag")
-            }
-
         },
         dismiss(c: IController): void {
             const frameIdx = frames.findIndex((frame) => {
