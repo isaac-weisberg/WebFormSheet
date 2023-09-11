@@ -1,4 +1,5 @@
 import { IController } from "./IController"
+import { NoScrollIndicatorClass, RegisterNoScrollIndicatorClass } from "./NoScrollIndicator"
 
 interface ModalStackFrame {
     controller: IController
@@ -18,6 +19,8 @@ const sheetGapFromTop = 32
 const sheetsBackgroundColor = '#FFFFFF'
 
 export function ModalStack(initialController: IController): IModalStack {
+    RegisterNoScrollIndicatorClass()
+
     const baseHeight = '100vh'
 
     function scrollToOpenedState(frame: ModalStackFrame) {
@@ -82,6 +85,7 @@ export function ModalStack(initialController: IController): IModalStack {
             sheetContainer.className = '_modalContainer'
             sheetContainer.style.height = baseHeight
             sheetContainer.style.overflow = 'scroll'
+            sheetContainer.classList.add(NoScrollIndicatorClass)
             sheetContainer.style.transformOrigin = '50% 32px'
 
             const sheet = document.createElement('div')
@@ -97,6 +101,7 @@ export function ModalStack(initialController: IController): IModalStack {
             contentWrapper.style.height = `calc(${baseHeight} - ${sheetGapFromTop}px)`
             contentWrapper.style.backgroundColor = "#FFFFFF"
             contentWrapper.style.overflow = 'scroll'
+            contentWrapper.classList.add(NoScrollIndicatorClass)
             sheet.appendChild(contentWrapper)
 
             contentWrapper.appendChild(c.view)
@@ -156,7 +161,7 @@ export function ModalStack(initialController: IController): IModalStack {
                 scrollToDismissedState(frame)
                 setTimeout(() => {
                     root.removeChild(frame.sheetContainer)
-                }, 700)
+                }, 620)
             }
 
             frames = framesThatStay
