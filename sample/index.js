@@ -61,6 +61,6 @@ setTimeout(() => {
     modalStack.present(controller3)
 }, 4500)
 
-setTimeout(() => {
-    modalStack.dismiss(controller1)
-}, 6000)
+// setTimeout(() => {
+//     modalStack.dismiss(controller1)
+// }, 6000)
